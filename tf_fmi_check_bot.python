@@ -1,0 +1,126 @@
+
+
+import json
+import requests
+
+# Bot Telegram by Gsm Arfin Fayez
+# Note: To make the bot pull, you must put this link:
+# https://api.telegram.org/bot$yourtoken/setWebhook?url=https://your_domain.com/check/bot/iFayez_bot_check.php
+
+token = 'YOUR_TELEGRAM_BOT_TOKEN'
+website = f'https://api.telegram.org/bot{token}'
+
+def check(message1):
+    message1 = message1.replace("/check ", "")
+    url = f"https://iservices-dev.us/check/Nhteam.php?imei={message1}"
+    response = requests.get(url).json()
+    if response.get('ERROR') == 'Invalid IMEI/Serial Number':
+        return "<code>IMEI / SERIAL INVALID ❌</code>"
+    elif response.get('type') is not None:
+        findmy_device = response.get('FindMyiDevice')
+        activation = response.get('Activation')
+        serial = response.get('Serial')
+        modelo = response.get('Modelo')
+        if findmy_device == "ON":
+            return f"✔️  Techno Fayez Fmi Check 𝐁𝐨𝐭 ✔️   \n========================= \n\n<code>SERIAL => </code><u>{serial}</u>" \
+                f"<code>\nMODEL => </code><u>{modelo}</u><code>\nActivation => </code><u>{activation}</u><code>\niCloud Lock => " \
+                f"</code><u>{findmy_device}</u> ❌\n<code>   \n=========================== \n\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒀𝒐𝒖. ✔️   \niFayez </code>"
+        else:
+            return f"✔️  Techno Fayez Fmi Check 𝐁𝐨𝐭 ✔️   \n========================= \n\n<code>SERIAL => </code><u>{serial}</u>" \
+                f"<code>\nMODEL => </code><u>{modelo}</u><code>\nActivation => </code><u>{activation}</u><code>\niCloud Lock => " \
+                f"</code><u>{findmy_device}</u> 🍎✔️ \n<code>   \n=========================== \n\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒀𝒐𝒖. ✔️ \niFayez </code>"
+    else:
+        findmy_device = response.get('FindMyiDevice')
+        activation = response.get('Activation')
+        serial = response.get('Serial')
+        modelo = response.get('Modelo')
+        if findmy_device == "ON":
+            return f"✔️  Techno Fayez Fmi Check 𝐁𝐨𝐭 ✔️   \n========================= \n\n<code>SERIAL => </code><u>{serial}</u>" \
+                f"<code>\nMODEL => </code><u>{modelo}</u><code>\nActivation => </code><u>{activation}</u><code>\niCloud Lock => " \
+                f"</code><u>{findmy_device}</u> ❌\n<code>   \n=========================== \n\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒀𝒐𝒖. ✔️   \niFayez </code>"
+        else:
+            return f"✔️  Techno Fayez Fmi Check 𝐁𝐨𝐭 ✔️   \n========================= \n\n<code>SERIAL => </code><u>{serial}</u>" \
+                f"<code>\nMODEL => </code><u>{modelo}</u><code>\nActivation => </code><u>{activation}</u><code>\niCloud Lock => " \
+                f"</code><u>{findmy_device}</u> 🍎✔️ \n<code>   \n=========================== \n\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒀𝒐𝒖. ✔️ \niFayez </code>"
+
+def checkmac(message):
+    serial = message.replace("/check_device ", "")
+    url = "https://iservices-dev.us/check/"
+    response = requests.get(url).json()
+    return response
+
+def iccid(message1):
+    message1 = message1.replace("/iccid ", "")
+    url = "https://iservices-dev.us/check/iccid.php"
+    response = requests.get(url).json()
+    if response.get('ERROR') == 'Invalid IMEI/Serial Number':
+        return "<code>NO ICCID /code>"
+    elif response.get('type') is not None:
+        fecha = response.get('fecha')
+        build = response.get('build')
+        iccid = response.get('iccid')
+        return f"✔️  iCCID ACTIVE ✔️   \n========================= \n\n<code>Active date  => </code><u>{fecha}</u>" \
+            f"<code>\nBUILD => </code><u>{build}</u><code>\niccid => </code><u>{iccid}</u> 🍎✔️ " \
+            f"\n<code>   \n=========================== \n\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒀𝒐𝒖. ✔️ \niFayez </code>"
+    else:
+        fecha = response.get('fecha')
+        build = response.get('build')
+        iccid = response.get('iccid')
+        return f"✔️  iCCID ACTIVE ✔️   \n========================= \n\n<code>Active date  => </code><u>{fecha}</u>" \
+            f"<code>\nBUILD => </code><u>{build}</u><code>\niccid Active => </code><u>{iccid}</u> 🍎✔️ " \
+            f"\n<code>   \n=========================== \n\n𝑻𝒉𝒂𝒏𝒌𝒔 𝒀𝒐𝒖. ✔️ \niFayez </code>"
+
+def send_message(text, chat_id):
+    url = f"{website}/sendMessage"
+    data = {
+        'chat_id': chat_id,
+        'text': text,
+        'parse_mode': 'HTML'
+    }
+    response = requests.post(url, data=data)
+    return response.json()
+
+def send_message1(text, chat_id):
+    url = f"{website}/sendMessage"
+    data = {
+        'chat_id': chat_id,
+        'text': text,
+        'parse_mode': 'HTML'
+    }
+    response = requests.post(url, data=data)
+    return response.json()
+
+def process_message(update):
+    chat_id = update['message']['chat']['id']
+    message = update['message']['text']
+    
+    if "/check " in message:
+        text1 = "<code>processing...</code>"
+        send_message1(text1, chat_id)
+        text = check(message)
+        send_message(text, chat_id)
+    
+    if "/iccid" in message:
+        text1 = "<code>processing...</code>"
+        send_message1(text1, chat_id)
+        text = iccid(message)
+        send_message(text, chat_id)
+    
+    if "/check_device " in message:
+        text1 = "<code>processing...</code>"
+        send_message1(text1, chat_id)
+        text = checkmac(message)
+        send_message(text, chat_id)
+
+def handle_update(update):
+    if 'message' in update:
+        process_message(update)
+
+def main():
+    input_data = json.loads(input())
+    handle_update(input_data)
+
+if __name__ == '__main__':
+    main()
+
+#you can install it using on console `pip install requests`.
